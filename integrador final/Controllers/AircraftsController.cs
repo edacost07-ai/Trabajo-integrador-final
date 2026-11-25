@@ -28,6 +28,7 @@ namespace integrador_final.Controllers
             {
                 query = query.Where(a => a.Name != null && a.Name.StartsWith(name));
             }
+            var totalCount = await query.CountAsync();
 
             var result = await query
                 .Select(a => new AircraftListDto
@@ -37,7 +38,17 @@ namespace integrador_final.Controllers
                     Iatacode = a.Iatacode ?? string.Empty,
                 })
                 .ToListAsync();
-            
+
+            var response = new PagedResultDto<AircraftListDto>
+            {
+                Items = result,
+                TotalCount = totalCount,
+                PageNumber = pageRequest.PageNumber,
+                PageSize = pageRequest.PageSize,
+                TotalPages = (int)Math.Ceiling((double)totalCount / pageRequest.PageSize)
+            };
+
+
             return Ok(result);
         }
     }

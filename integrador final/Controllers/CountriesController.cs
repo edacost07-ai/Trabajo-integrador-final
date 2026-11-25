@@ -17,6 +17,7 @@ namespace integrador_final.Controllers
         {
             _context = context;
         }
+        
         //Consuta nivel intermedio
         [HttpGet]
         public async Task<ActionResult<List<CountryListDto>>> GetCountries([FromQuery]PageRequest pageRequest, string? name)
@@ -38,6 +39,7 @@ namespace integrador_final.Controllers
                                    .Skip((pageRequest.PageNumber - 1) * pageRequest.PageSize)
                                    .Take(pageRequest.PageSize)
                                    .ToListAsync();
+
 
             return Ok(countries);
         }
